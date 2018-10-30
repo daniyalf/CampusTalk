@@ -15,12 +15,12 @@ namespace CampusChat.Models
     public partial class Message
     {
         public int MessageID { get; set; }
-        public int SenderID { get; set; }
-        public int RecieverID { get; set; }
+        public string SenderID { get; set; }
+        public string RecieverID { get; set; }
         public string Content { get; set; }
         public System.DateTime SentTime { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
     }
 }

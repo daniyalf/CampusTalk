@@ -17,7 +17,7 @@ namespace CampusChat.Controllers
         // GET: Messages
         public ActionResult Index()
         {
-            var messages = db.Messages.Include(m => m.User).Include(m => m.User1);
+            var messages = db.Messages.Include(m => m.AspNetUser).Include(m => m.AspNetUser1);
             return View(messages.ToList());
         }
 
@@ -39,8 +39,8 @@ namespace CampusChat.Controllers
         // GET: Messages/Create
         public ActionResult Create()
         {
-            ViewBag.SenderID = new SelectList(db.Users, "UserID", "Username");
-            ViewBag.RecieverID = new SelectList(db.Users, "UserID", "Username");
+            ViewBag.SenderID = new SelectList(db.AspNetUsers, "Id", "Email");
+            ViewBag.RecieverID = new SelectList(db.AspNetUsers, "Id", "Email");
             return View();
         }
 
@@ -58,8 +58,8 @@ namespace CampusChat.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SenderID = new SelectList(db.Users, "UserID", "Username", message.SenderID);
-            ViewBag.RecieverID = new SelectList(db.Users, "UserID", "Username", message.RecieverID);
+            ViewBag.SenderID = new SelectList(db.AspNetUsers, "Id", "Email", message.SenderID);
+            ViewBag.RecieverID = new SelectList(db.AspNetUsers, "Id", "Email", message.RecieverID);
             return View(message);
         }
 
@@ -75,8 +75,8 @@ namespace CampusChat.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.SenderID = new SelectList(db.Users, "UserID", "Username", message.SenderID);
-            ViewBag.RecieverID = new SelectList(db.Users, "UserID", "Username", message.RecieverID);
+            ViewBag.SenderID = new SelectList(db.AspNetUsers, "Id", "Email", message.SenderID);
+            ViewBag.RecieverID = new SelectList(db.AspNetUsers, "Id", "Email", message.RecieverID);
             return View(message);
         }
 
@@ -93,8 +93,8 @@ namespace CampusChat.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.SenderID = new SelectList(db.Users, "UserID", "Username", message.SenderID);
-            ViewBag.RecieverID = new SelectList(db.Users, "UserID", "Username", message.RecieverID);
+            ViewBag.SenderID = new SelectList(db.AspNetUsers, "Id", "Email", message.SenderID);
+            ViewBag.RecieverID = new SelectList(db.AspNetUsers, "Id", "Email", message.RecieverID);
             return View(message);
         }
 

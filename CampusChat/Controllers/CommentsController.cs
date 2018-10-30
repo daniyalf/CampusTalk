@@ -17,7 +17,7 @@ namespace CampusChat.Controllers
         // GET: Comments
         public ActionResult Index()
         {
-            var comments = db.Comments.Include(c => c.Post).Include(c => c.User);
+            var comments = db.Comments.Include(c => c.AspNetUser).Include(c => c.Post);
             return View(comments.ToList());
         }
 
@@ -39,8 +39,8 @@ namespace CampusChat.Controllers
         // GET: Comments/Create
         public ActionResult Create()
         {
-            ViewBag.PostID = new SelectList(db.Posts, "PostID", "Content");
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username");
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
+            ViewBag.PostID = new SelectList(db.Posts, "PostID", "UserID");
             return View();
         }
 
@@ -58,8 +58,8 @@ namespace CampusChat.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PostID = new SelectList(db.Posts, "PostID", "Content", comment.PostID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", comment.UserID);
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", comment.UserID);
+            ViewBag.PostID = new SelectList(db.Posts, "PostID", "UserID", comment.PostID);
             return View(comment);
         }
 
@@ -75,8 +75,8 @@ namespace CampusChat.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PostID = new SelectList(db.Posts, "PostID", "Content", comment.PostID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", comment.UserID);
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", comment.UserID);
+            ViewBag.PostID = new SelectList(db.Posts, "PostID", "UserID", comment.PostID);
             return View(comment);
         }
 
@@ -93,8 +93,8 @@ namespace CampusChat.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PostID = new SelectList(db.Posts, "PostID", "Content", comment.PostID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", comment.UserID);
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", comment.UserID);
+            ViewBag.PostID = new SelectList(db.Posts, "PostID", "UserID", comment.PostID);
             return View(comment);
         }
 

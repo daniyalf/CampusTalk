@@ -12,17 +12,12 @@ namespace CampusChat.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Comment
+    public partial class sysdiagram
     {
-        public int CommentID { get; set; }
-        public string UserID { get; set; }
-        public string Content { get; set; }
-        public System.DateTime PostedTime { get; set; }
-        public decimal Rating { get; set; }
-        public Nullable<int> ParentID { get; set; }
-        public int PostID { get; set; }
-    
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Post Post { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

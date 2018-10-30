@@ -27,10 +27,10 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.Username)
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
         </th>
         <th></th>
     </tr>
@@ -53,10 +53,10 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.Username)
+            @Html.DisplayFor(modelItem => item.Category.CategoryName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |

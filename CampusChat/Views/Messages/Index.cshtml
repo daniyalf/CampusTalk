@@ -18,10 +18,10 @@
             @Html.DisplayNameFor(model => model.SentTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.Username)
+            @Html.DisplayNameFor(model => model.AspNetUser.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User1.Username)
+            @Html.DisplayNameFor(model => model.AspNetUser1.Email)
         </th>
         <th></th>
     </tr>
@@ -35,10 +35,10 @@
             @Html.DisplayFor(modelItem => item.SentTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.Username)
+            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User1.Username)
+            @Html.DisplayFor(modelItem => item.AspNetUser1.Email)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.MessageID }) |

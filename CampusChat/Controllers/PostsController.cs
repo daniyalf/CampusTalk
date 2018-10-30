@@ -17,7 +17,7 @@ namespace CampusChat.Controllers
         // GET: Posts
         public ActionResult Index()
         {
-            var posts = db.Posts.Include(p => p.Category).Include(p => p.User);
+            var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
             return View(posts.ToList());
         }
 
@@ -39,8 +39,8 @@ namespace CampusChat.Controllers
         // GET: Posts/Create
         public ActionResult Create()
         {
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username");
             return View();
         }
 
@@ -58,8 +58,8 @@ namespace CampusChat.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", post.UserID);
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", post.CategoryID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", post.UserID);
             return View(post);
         }
 
@@ -75,8 +75,8 @@ namespace CampusChat.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", post.UserID);
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", post.CategoryID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", post.UserID);
             return View(post);
         }
 
@@ -93,8 +93,8 @@ namespace CampusChat.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", post.UserID);
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", post.CategoryID);
-            ViewBag.UserID = new SelectList(db.Users, "UserID", "Username", post.UserID);
             return View(post);
         }
 

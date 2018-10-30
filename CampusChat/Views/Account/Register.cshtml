@@ -12,6 +12,12 @@
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
+        @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
@@ -27,6 +33,298 @@
         @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @{
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem
+            {
+                Text = "Alabama",
+                Value = "AB"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Alaska",
+                Value = "AK"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Arizona",
+                Value = "AZ"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Arkansas",
+                Value = "AR"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "California",
+                Value = "CA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Colorado",
+                Value = "CO"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Connecticut",
+                Value = "CT"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Delaware",
+                Value = "DE"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Florida",
+                Value = "FL"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Georgia",
+                Value = "GA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Hawaii",
+                Value = "HI"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Idaho",
+                Value = "ID"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Illinois",
+                Value = "IL"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Indiana",
+                Value = "IN"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Iowa",
+                Value = "IA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Kansas",
+                Value = "KS"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Kentucky",
+                Value = "KY"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Louisiana",
+                Value = "LA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Maine",
+                Value = "ME"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Maryland",
+                Value = "MD"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Massachusetts",
+                Value = "MA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Michigan",
+                Value = "MI"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Minnesota",
+                Value = "MN"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Mississippi",
+                Value = "MS"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Missouri",
+                Value = "MO"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Montana",
+                Value = "MT"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Nebraska",
+                Value = "NE"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Nevada",
+                Value = "NV"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "New Hampshire",
+                Value = "NH"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "New Jersey",
+                Value = "NJ"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "New Mexico",
+                Value = "NM"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "New York",
+                Value = "NY"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "North Carolina",
+                Value = "NC"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "North Dakota",
+                Value = "ND"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Ohio",
+                Value = "OH"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Oklahoma",
+                Value = "OK"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Oregon",
+                Value = "OR"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Pennsylvania",
+                Value = "PA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Rhode Island",
+                Value = "RI"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "South Carolina",
+                Value = "SC"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "South Dakota",
+                Value = "SD"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Tennessee",
+                Value = "TN"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Texas",
+                Value = "TX"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Utah",
+                Value = "UT"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Vermont",
+                Value = "VT"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Virginia",
+                Value = "VA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Washington",
+                Value = "WA"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "West Virginia",
+                Value = "WV"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Wisconsin",
+                Value = "WI"
+            });
+            listItems.Add(new SelectListItem
+            {
+                Text = "Wyoming",
+                Value = "WY"
+            });
+        }
+        @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("State", listItems, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.University, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.University, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Major, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Major, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.GraduationDate, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.GraduationDate, new { @type = "date" })
         </div>
     </div>
     <div class="form-group">

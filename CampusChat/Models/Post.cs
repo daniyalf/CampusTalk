@@ -21,7 +21,7 @@ namespace CampusChat.Models
         }
     
         public int PostID { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public string Content { get; set; }
         public System.DateTime PostedTime { get; set; }
         public int CategoryID { get; set; }
@@ -29,9 +29,9 @@ namespace CampusChat.Models
         public int Downvotes { get; set; }
         public string Title { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
-        public virtual User User { get; set; }
     }
 }
