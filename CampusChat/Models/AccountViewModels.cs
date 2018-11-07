@@ -109,7 +109,11 @@ namespace CampusChat.Models
         [Display(Name = "Graduation Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM}", ApplyFormatInEditMode = true)]
-        public DateTime GraduationDate{ get; set; }
+        public DateTime ExpectedGraduationDate{ get; set; }
+
+        [Required]
+        [Display(Name = "By checking this box, you are agreeing to the terms of use.")]
+        public bool AgreedToTerms { get; set;}
     }
 
     public class ResetPasswordViewModel

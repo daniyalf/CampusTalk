@@ -9,12 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CampusChat.Models;
+using System.Collections.Generic;
 
 namespace CampusChat.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -152,7 +154,26 @@ namespace CampusChat.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Username, Email = model.Email, firstName = model.FirstName, lastName = model.LastName,
-                                                state = model.State, university = model.University, major = model.Major, graduationDate = model.GraduationDate};
+                                                major = model.Major, ExpectedGraduationDate = model.ExpectedGraduationDate, AgreedToTerms = model.AgreedToTerms};
+                
+                University uni = new University();
+                uni.Name = model.University;
+                uni.State = model.State;
+
+                int getUniID(String name)
+                {
+                    int id = (from o in db.Universities where o.Name == name select o.UniversityID).SingleOrDefault();
+                    return id;
+                }
+
+                if(!db.Universities.Any(o => o.Name == uni.Name))
+                {
+                    db.Universities.Add(uni);
+                    db.SaveChanges();
+                }
+
+                user.universityID = getUniID(uni.Name);
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
