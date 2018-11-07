@@ -12,10 +12,10 @@ namespace CampusChat.Models
     {
         public string firstName { get; set;}
         public string lastName { get; set;}
-        public string state { get; set;}
-        public string university { get; set;}
+        public Int32? universityID { get; set;}
         public string major { get; set;}
-        public DateTime graduationDate { get; set;}
+        public DateTime? ExpectedGraduationDate { get; set;}
+        public bool? AgreedToTerms { get; set;}
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -28,7 +28,7 @@ namespace CampusChat.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("CampusChatApplication", throwIfV1Schema: false)
+            : base("CampusChatApplications", throwIfV1Schema: false)
         {
         }
 
