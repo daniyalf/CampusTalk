@@ -9,6 +9,15 @@
     padding-right: 15px;
 }
 
+#container {
+    padding-top: 150px;
+    padding-bottom: 100px;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
