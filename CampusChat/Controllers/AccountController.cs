@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CampusChat.Models;
 using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using System.IO;
 
 namespace CampusChat.Controllers
 {
@@ -501,6 +503,42 @@ namespace CampusChat.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+        }
+
+        [AllowAnonymous]
+        public ActionResult Profile()
+        {
+            string userID = User.Identity.GetUserId();
+            AspNetUser aspnetuser = db.AspNetUsers.Find(userID);
+            if(aspnetuser == null)
+                return HttpNotFound();
+            return View(aspnetuser);
+        }
+
+        public ActionResult ChangeProfilePicture(HttpPostedFileBase file)
+        {
+            AspNetUser aspnetuser = null;
+            if(file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                file.SaveAs(path);
+                string userID = User.Identity.GetUserId();
+                byte [] byteArray = System.IO.File.ReadAllBytes(path);
+                db.AspNetUsers.Find(userID).ProfilePic = Convert.ToBase64String(byteArray);
+                db.SaveChanges();
+                aspnetuser = db.AspNetUsers.Find(userID);
+            }
+            return View("Profile", aspnetuser);
+        }
+
+        public ActionResult EditBiography(string editText)
+        {
+            AspNetUser aspnetuser = db.AspNetUsers.Find(User.Identity.GetUserId());
+            db.AspNetUsers.Find(User.Identity.GetUserId()).Biography = editText;
+            db.SaveChanges();
+            return View("Profile", aspnetuser);
+
         }
         #endregion
     }
