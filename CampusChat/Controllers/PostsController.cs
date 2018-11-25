@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CampusChat.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
@@ -39,7 +41,6 @@ namespace CampusChat.Controllers
         // GET: Posts/Create
         public ActionResult Create()
         {
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
             return View();
         }
@@ -49,18 +50,41 @@ namespace CampusChat.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostID,UserID,Content,PostedTime,CategoryID,Upvotes,Downvotes,Title")] Post post)
+        public ActionResult Create([Bind(Include = "Content,CategoryID,Title")] Post post)
         {
+            string userID = User.Identity.GetUserId();
+            Post newPost = new Post();
+            newPost.UserID = userID;
+            newPost.PostedTime = DateTime.Now;
+            newPost.Upvotes = 0;
+            newPost.Downvotes = 0;
+            newPost.Title = post.Title;
+            newPost.Content = post.Content;
+            newPost.CategoryID = post.CategoryID;
+            newPost.PostID = post.PostID;
             if (ModelState.IsValid)
             {
-                db.Posts.Add(post);
-                db.SaveChanges();
+                db.Posts.Add(newPost);
+                try {
+                    db.SaveChanges();
+                }
+                catch(DbEntityValidationException e)
+                {
+                    foreach(var eve in e.EntityValidationErrors)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Entity of type \" {0} \"in StateChangeEventArgs \" {1} \" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach(var ve in eve.ValidationErrors)
+                        {
+                            System.Diagnostics.Debug.WriteLine("- Property: \" {0} \", Error: \"{1}\" ", ve.PropertyName, ve.ErrorMessage);
+                        }
+
+                    }
+                    throw;
+                }
                 return RedirectToAction("Index");
             }
-
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", post.UserID);
-            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", post.CategoryID);
-            return View(post);
+            return View(newPost);
         }
 
         // GET: Posts/Edit/5
@@ -85,11 +109,14 @@ namespace CampusChat.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostID,UserID,Content,PostedTime,CategoryID,Upvotes,Downvotes,Title")] Post post)
+        public ActionResult Edit(Post post)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
+                var currentPost = db.Posts.FirstOrDefault(o => o.PostID == post.PostID);
+                currentPost.Content = post.Content;
+                currentPost.Title = post.Title;
+                currentPost.CategoryID = post.CategoryID;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -131,6 +158,22 @@ namespace CampusChat.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Upvote(int id)
+        {
+            Post post = db.Posts.Find(id);
+            post.Upvotes++;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Downvote(int id)
+        {
+            Post post = db.Posts.Find(id);
+            post.Downvotes++;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

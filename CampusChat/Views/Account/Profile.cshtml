@@ -87,13 +87,10 @@
             @Html.DisplayFor(model => model.ExpectedGraduationDate)
         </dd>
 
-        <dt>
-            Edit biography
-        </dt>
         <dd>
-            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post))
             {
-                <input type="text" name="biotext" />
+                <input type="button" value="Edit Biography" onclick="location.href='@Url.Action("EditBiography", "Account")'" />
             }
         </dd>
 

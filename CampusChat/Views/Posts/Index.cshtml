@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<CampusChat.Models.Post>
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = "Index";
@@ -12,10 +13,19 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Content)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Category.CategoryName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.PostedTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AspNetUser.UserName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Upvotes)
@@ -23,25 +33,26 @@
         <th>
             @Html.DisplayNameFor(model => model.Downvotes)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
-        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Content)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.PostedTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Upvotes)
@@ -50,18 +61,21 @@
             @Html.DisplayFor(modelItem => item.Downvotes)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PostID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PostID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PostID })
+            @{
+                var userId = User.Identity.GetUserId();
+                if (userId == item.UserID)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PostID })
+                    @Html.Label(" ");
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PostID });
+                }
+                else
+                {
+                    @Html.ActionLink("Upvote", "Upvote", new {id = item.PostID });
+                    @Html.Label(" ");
+                    @Html.ActionLink("Downvote", "Downvote", new {id = item.PostID });
+                }
+            }
         </td>
     </tr>
 }
