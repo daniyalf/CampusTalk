@@ -12,9 +12,9 @@
     <hr />
     <dl class="dl-horizontal">
         <dd>
-            @using (Html.BeginForm("EditBio", "Account"))
+            @using (Html.BeginForm("BioEdit", "Account"))
             {
-                <input type="Text" name="editText" onclick="@Url.Action("EditBio", "Account")">
+                <input type="Text" name="editText"/>
             }
         </dd>
     </dl>
