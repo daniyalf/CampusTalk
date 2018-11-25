@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CampusChat.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
@@ -53,7 +54,15 @@ namespace CampusChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Posts.Add(post);
+                Post newPost = new Post();
+                newPost.UserID = User.Identity.GetUserId();
+                newPost.PostedTime = DateTime.Now;
+                newPost.Upvotes = 0;
+                newPost.Downvotes = 0;
+                newPost.Content = post.Content;
+                newPost.CategoryID = post.CategoryID;
+                newPost.Title = post.Title;
+                db.Posts.Add(newPost);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -89,7 +98,13 @@ namespace CampusChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
+                Post newPost = post;
+                newPost.CategoryID = post.CategoryID;
+                newPost.Title = post.Title;
+                newPost.Content = post.Content;
+                db.Posts.Find(post.PostID).CategoryID = newPost.CategoryID;
+                db.Posts.Find(post.PostID).Title = newPost.Title;
+                db.Posts.Find(post.PostID).Content = newPost.Content;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -131,6 +146,22 @@ namespace CampusChat.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult Upvote(int? id)
+        {
+            var post = db.Posts.Find(id);
+            post.Upvotes++;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Downvote(int? id)
+        {
+            var post = db.Posts.Find(id);
+            post.Downvotes++;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
