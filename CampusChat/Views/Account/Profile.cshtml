@@ -18,7 +18,7 @@
             @{
                 var imgSource = String.Format("data:image/gif;base64,{0}", Model.ProfilePic);
             }
-            <img src="@imgSource"/>
+            <img src="@imgSource" />
         </dd>
         <dt>
             Change profile picture:
@@ -86,20 +86,18 @@
         <dd>
             @Html.DisplayFor(model => model.ExpectedGraduationDate)
         </dd>
-
-        <dd>
-            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <input type="Button" name="EditBio" value ="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
-            }
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Biography)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Biography)
+        </dd>
+        <dd>
+            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="Button" name="EditBio" value="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
+            }
         </dd>
 
     </dl>

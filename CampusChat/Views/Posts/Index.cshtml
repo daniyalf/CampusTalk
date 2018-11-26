@@ -73,7 +73,10 @@
                         @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID});
                         @Html.Label(" ");
                         @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID});
+                      
                     }
+                    @Html.Label(" ");
+                    @Html.ActionLink("Comment", "Create", "Comments", new { id = item.PostID }, null);
                 }
             </td>
         </tr>
