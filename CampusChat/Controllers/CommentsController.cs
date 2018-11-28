@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CampusChat.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
@@ -37,7 +38,7 @@ namespace CampusChat.Controllers
         }
 
         // GET: Comments/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
             ViewBag.PostID = new SelectList(db.Posts, "PostID", "UserID");
@@ -49,11 +50,18 @@ namespace CampusChat.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CommentID,UserID,Content,PostedTime,Rating,ParentID,PostID")] Comment comment)
+        public ActionResult Create(int? id, [Bind(Include = "CommentID,UserID,Content,PostedTime,Rating,ParentID,PostID")] Comment comment)
         {
             if (ModelState.IsValid)
             {
-                db.Comments.Add(comment);
+                Comment newComment = new Comment();
+                newComment.UserID = User.Identity.GetUserId();
+                newComment.Content = comment.Content;
+                newComment.PostedTime = DateTime.Now;
+                newComment.Rating = 0;
+                newComment.PostID = db.Posts.Find(id).PostID;
+                newComment.ParentID = comment.ParentID;
+                db.Comments.Add(newComment);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
