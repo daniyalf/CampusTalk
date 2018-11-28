@@ -1,68 +1,54 @@
 ﻿@using CampusChat.Models
 @model LoginViewModel
 @{
-    //ViewBag.Title = "Log in";
-    ViewBag.Title =  "Campus Chat";
+    ViewBag.Title = "Campus Chat";
 }
-
 
 <div class=" center">
-<h2 style = "text-align:center">@ViewBag.Title</h2>
+    <h2 style="text-align:center">@ViewBag.Title</h2>
+    <div class="row">
+        <div class="col-md loginSection">
+            <section id="loginForm">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 
-<div class="row">
-    <div class="col-md-8 loginSection">
-        <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <hr/>
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+                {
+                    @Html.AntiForgeryToken()
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <p align ="center" >
-                    @Html.ActionLink("Register", "Register")
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    @Html.ActionLink("Forgot Password", "ForgotPassword")
-                </p>
-
-                @*
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Username, new { @class = "col-md-5 control-label" })
+                        <div class="col-md">
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                </div>
-                    *@
-                
-                <div class="form-group">
-                    <div align ="center" class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Log in" class="btn btn-default" />
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-5 control-label" })
+                        <div class="col-md">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
-                
-                //Enable this once you have account confirmation enabled for password reset functionality for forgot password
-            } 
+
+                    <p align="center">
+                        @Html.ActionLink("Register", "Register")
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        @Html.ActionLink("Forgot Password", "ForgotPassword")
+                        &nbsp;
+                    </p>
+
+                    <div class="form-group">
+                        <div align="center" class="col-md-offset-1 col-md-10">
+                            <input type="submit" value="Log in" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+</div>
     </div>
 </div>
-</div>
+                
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
