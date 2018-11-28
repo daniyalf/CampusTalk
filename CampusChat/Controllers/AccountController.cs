@@ -532,13 +532,18 @@ namespace CampusChat.Controllers
             return View("Profile", aspnetuser);
         }
 
-        public ActionResult EditBiography(string editText)
+        public ActionResult EditBiography()
         {
             AspNetUser aspnetuser = db.AspNetUsers.Find(User.Identity.GetUserId());
-            db.AspNetUsers.Find(User.Identity.GetUserId()).Biography = editText;
+            return View("EditBio", aspnetuser);
+        }
+
+        public ActionResult BioEdit(string editText)
+        {
+            AspNetUser aspnetuser = db.AspNetUsers.Find(User.Identity.GetUserId());
+            aspnetuser.Biography = editText;
             db.SaveChanges();
             return View("Profile", aspnetuser);
-
         }
         #endregion
     }
