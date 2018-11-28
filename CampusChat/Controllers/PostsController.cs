@@ -20,7 +20,7 @@ namespace CampusChat.Controllers
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
-            posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+            posts = db.Posts.OrderByDescending(o => ((o.Upvotes - o.Downvotes)/(DbFunctions.DiffDays(o.PostedTime, DateTime.Now) + 1)));
             return View(posts.ToList());
         }
 
@@ -176,7 +176,7 @@ namespace CampusChat.Controllers
             }
             else if(sortOption == "Hot")
             {
-                posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+                posts = db.Posts.OrderByDescending(o => ((o.Upvotes - o.Downvotes)/(DbFunctions.DiffDays(o.PostedTime, DateTime.Now) + 1)));
             }
             return View("Index", posts.ToList());
         }
