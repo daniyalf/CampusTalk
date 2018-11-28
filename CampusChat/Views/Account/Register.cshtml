@@ -336,19 +336,15 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.AgreedToTerms, new { @class = "col-md-7 control-label" })
-
+        <div class="col-md-7 control-label">
+            <strong>By checking this box, you are agreeing to the 
+            @Html.ActionLink("Terms of service.", "", "Terms")
+            </strong>
+        </div>
         <div class="col-md">
             @Html.CheckBoxFor(Model => Model.AgreedToTerms)
         </div>
-
     </div>
-    <div class="form-group">
-        <div class="col-md-offset-4 col-md-10">
-            @Html.ActionLink("To view detailed terms click here", "", "Terms")
-        </div>
-    </div>
-
     <div class="form-group">
         <div class="col-md-offset-5 col-md-10">
             <input type="submit" class="btn btn-default" value="Register" />

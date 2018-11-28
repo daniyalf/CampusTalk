@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
