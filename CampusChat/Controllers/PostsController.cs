@@ -19,6 +19,7 @@ namespace CampusChat.Controllers
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
             return View(posts.ToList());
         }
 
@@ -162,6 +163,25 @@ namespace CampusChat.Controllers
             post.Downvotes++;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Sort(string sortOption)
+        {
+            var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            if(sortOption == "New")
+            {
+                posts = db.Posts.OrderByDescending(o => o.PostedTime);
+            }
+            else if(sortOption == "Top")
+            {
+                posts = db.Posts.OrderByDescending(o => (o.Upvotes/(o.Downvotes + 1)));
+            }
+            else if(sortOption == "Hot")
+            {
+                posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+            }
+            return View("Index", posts.ToList());
         }
     }
 }

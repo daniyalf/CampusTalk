@@ -2,10 +2,34 @@
 @model IEnumerable<CampusChat.Models.Post>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Timeline";
 }
 
-<h2>Index</h2>
+<h2>Timeline</h2>
+
+@{
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Hot",
+        Value = "Hot"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Top Rated",
+        Value = "Top"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Newest",
+        Value = "New"
+    });
+}
+
+@using (Html.BeginForm("Sort", "Posts"))
+{
+    @Html.DropDownList("sortOption", listItems, new {title = "Pick Sort", onchange = "submit();"})
+}
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -70,9 +94,9 @@
                     }
                     else
                     {
-                        @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID});
+                        @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID });
                         @Html.Label(" ");
-                        @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID});
+                        @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
                     }
                 }
             </td>
