@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -19,6 +20,7 @@ namespace CampusChat.Controllers
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
             return View(posts.ToList());
         }
 
@@ -40,7 +42,6 @@ namespace CampusChat.Controllers
         // GET: Posts/Create
         public ActionResult Create()
         {
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
             return View();
         }
@@ -50,11 +51,11 @@ namespace CampusChat.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PostID,UserID,Content,PostedTime,CategoryID,Upvotes,Downvotes,Title")] Post post)
+        public ActionResult Create([Bind(Include = "Content,CategoryID,Title")] Post post)
         {
+            Post newPost = new Post();
             if (ModelState.IsValid)
             {
-                Post newPost = new Post();
                 newPost.UserID = User.Identity.GetUserId();
                 newPost.PostedTime = DateTime.Now;
                 newPost.Upvotes = 0;
@@ -66,10 +67,7 @@ namespace CampusChat.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", post.UserID);
-            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", post.CategoryID);
-            return View(post);
+            return View(newPost);
         }
 
         // GET: Posts/Edit/5
@@ -94,7 +92,7 @@ namespace CampusChat.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PostID,UserID,Content,PostedTime,CategoryID,Upvotes,Downvotes,Title")] Post post)
+        public ActionResult Edit(Post post)
         {
             if (ModelState.IsValid)
             {
@@ -162,6 +160,25 @@ namespace CampusChat.Controllers
             post.Downvotes++;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Sort(string sortOption)
+        {
+            var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            if(sortOption == "New")
+            {
+                posts = db.Posts.OrderByDescending(o => o.PostedTime);
+            }
+            else if(sortOption == "Top")
+            {
+                posts = db.Posts.OrderByDescending(o => (o.Upvotes/(o.Downvotes + 1)));
+            }
+            else if(sortOption == "Hot")
+            {
+                posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+            }
+            return View("Index", posts.ToList());
         }
     }
 }

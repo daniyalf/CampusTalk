@@ -382,6 +382,7 @@
     <Content Include="Views\Posts\Index.cshtml" />
     <Content Include="Views\Terms\Index.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\EditBio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

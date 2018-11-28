@@ -536,7 +536,6 @@ namespace CampusChat.Controllers
         {
             AspNetUser aspnetuser = db.AspNetUsers.Find(User.Identity.GetUserId());
             return View("EditBio", aspnetuser);
-
         }
 
         public ActionResult BioEdit(string editText)
