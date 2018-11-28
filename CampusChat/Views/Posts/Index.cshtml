@@ -6,7 +6,6 @@
 }
 
 <h2>Timeline</h2>
-
 @{
     List<SelectListItem> listItems = new List<SelectListItem>();
     listItems.Add(new SelectListItem
@@ -98,6 +97,8 @@
                         @Html.Label(" ");
                         @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
                     }
+                    @Html.Label(" ");
+                    @Html.ActionLink("Comment", "Create", "Comments", new { id = item.PostID }, null);
                 }
             </td>
         </tr>

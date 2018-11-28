@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,14 +23,11 @@
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
                         <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
                         <li>@Html.ActionLink("Comments", "Index", "Comments")</li>
                         <li>@Html.ActionLink("Messages", "Index", "Messages")</li>
                         <li>@Html.ActionLink("Universities", "Index", "Universities")</li>
                         <li>@Html.ActionLink("Users", "Index", "AspnetUsers")</li>
-                        <li>@Html.ActionLink("Posts", "Index", "Posts")</li>
-                        <li>@Html.ActionLink("Terms", "Index", "Terms")</li>
                     }
                     else
                     {
@@ -46,10 +43,12 @@
         <hr />
         <footer>
             <p class="modal-footer">
-                <a href="http://localhost:58732/Home/Contact">Company Information</a>
+                @Html.ActionLink("About Us", "About", "Home")
                 | &copy; @DateTime.Now.Year Campus Chat
+
             </p>
-        </footer>
+        </footer> 
+
 
     </div>
 
