@@ -88,24 +88,21 @@
         </dd>
 
         <dt>
-            Edit biography
-        </dt>
-        <dd>
-            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <input type="text" name="biotext" />
-            }
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Biography)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Biography)
         </dd>
-        <p style="text-align:center">
-            <a href="http://localhost:58732/" class="btn btn-primary btn-lg">Privacy Preferences</a>
-        </p>
+        <dd>
+            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="Button" name="EditBio" value="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
+            }
+        </dd>
     </dl>
+
+    <p style="text-align:center">
+        <a href="http://localhost:58732/" class="btn btn-primary btn-lg">Privacy Preferences</a>
+    </p>
 </div>

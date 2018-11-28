@@ -1,0 +1,22 @@
+﻿@model CampusChat.Models.AspNetUser
+@{
+    ViewBag.Title = "EditBio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditBio</h2>
+
+<div>
+    <h4>@User.Identity.Name</h4>
+    Edit Biography
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            @using (Html.BeginForm("BioEdit", "Account"))
+            {
+                <input type="Text" name="editText"/>
+            }
+        </dd>
+    </dl>
+</div>
+
