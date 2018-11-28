@@ -90,7 +90,7 @@
         <dd>
             @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post))
             {
-                <input type="button" value="Edit Biography" onclick="location.href='@Url.Action("EditBiography", "Account")'" />
+                <input type="Button" name="EditBio" value ="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
             }
         </dd>
 

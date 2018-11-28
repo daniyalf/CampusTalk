@@ -20,6 +20,7 @@ namespace CampusChat.Controllers
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
             return View(posts.ToList());
         }
 
@@ -52,36 +53,18 @@ namespace CampusChat.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Content,CategoryID,Title")] Post post)
         {
-            string userID = User.Identity.GetUserId();
             Post newPost = new Post();
-            newPost.UserID = userID;
-            newPost.PostedTime = DateTime.Now;
-            newPost.Upvotes = 0;
-            newPost.Downvotes = 0;
-            newPost.Title = post.Title;
-            newPost.Content = post.Content;
-            newPost.CategoryID = post.CategoryID;
-            newPost.PostID = post.PostID;
             if (ModelState.IsValid)
             {
+                newPost.UserID = User.Identity.GetUserId();
+                newPost.PostedTime = DateTime.Now;
+                newPost.Upvotes = 0;
+                newPost.Downvotes = 0;
+                newPost.Content = post.Content;
+                newPost.CategoryID = post.CategoryID;
+                newPost.Title = post.Title;
                 db.Posts.Add(newPost);
-                try {
-                    db.SaveChanges();
-                }
-                catch(DbEntityValidationException e)
-                {
-                    foreach(var eve in e.EntityValidationErrors)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Entity of type \" {0} \"in StateChangeEventArgs \" {1} \" has the following validation errors:",
-                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                        foreach(var ve in eve.ValidationErrors)
-                        {
-                            System.Diagnostics.Debug.WriteLine("- Property: \" {0} \", Error: \"{1}\" ", ve.PropertyName, ve.ErrorMessage);
-                        }
-
-                    }
-                    throw;
-                }
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(newPost);
@@ -113,10 +96,13 @@ namespace CampusChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                var currentPost = db.Posts.FirstOrDefault(o => o.PostID == post.PostID);
-                currentPost.Content = post.Content;
-                currentPost.Title = post.Title;
-                currentPost.CategoryID = post.CategoryID;
+                Post newPost = post;
+                newPost.CategoryID = post.CategoryID;
+                newPost.Title = post.Title;
+                newPost.Content = post.Content;
+                db.Posts.Find(post.PostID).CategoryID = newPost.CategoryID;
+                db.Posts.Find(post.PostID).Title = newPost.Title;
+                db.Posts.Find(post.PostID).Content = newPost.Content;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -160,20 +146,39 @@ namespace CampusChat.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Upvote(int id)
+        public ActionResult Upvote(int? id)
         {
-            Post post = db.Posts.Find(id);
+            var post = db.Posts.Find(id);
             post.Upvotes++;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        public ActionResult Downvote(int id)
+        public ActionResult Downvote(int? id)
         {
-            Post post = db.Posts.Find(id);
+            var post = db.Posts.Find(id);
             post.Downvotes++;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Sort(string sortOption)
+        {
+            var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            if(sortOption == "New")
+            {
+                posts = db.Posts.OrderByDescending(o => o.PostedTime);
+            }
+            else if(sortOption == "Top")
+            {
+                posts = db.Posts.OrderByDescending(o => (o.Upvotes/(o.Downvotes + 1)));
+            }
+            else if(sortOption == "Hot")
+            {
+                posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+            }
+            return View("Index", posts.ToList());
         }
     }
 }

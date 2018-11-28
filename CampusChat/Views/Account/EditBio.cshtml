@@ -8,15 +8,13 @@
 
 <div>
     <h4>@User.Identity.Name</h4>
+    Edit Biography
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            Edit biography
-        </dt>
         <dd>
-            @using (Html.BeginForm("BioEdit", "Account", FormMethod.Post))
+            @using (Html.BeginForm("BioEdit", "Account"))
             {
-                <input type="text" name="editText" />
+                <input type="Text" name="editText"/>
             }
         </dd>
     </dl>
