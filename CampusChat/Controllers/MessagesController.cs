@@ -10,6 +10,7 @@ using CampusChat.Models;
 
 namespace CampusChat.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
