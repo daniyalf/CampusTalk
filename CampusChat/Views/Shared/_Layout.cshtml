@@ -29,6 +29,15 @@
                         <li>@Html.ActionLink("Messages", "Index", "Messages")</li>
                         <li>@Html.ActionLink("Universities", "Index", "Universities")</li>
                         <li>@Html.ActionLink("Users", "Index", "AspnetUsers")</li>
+                        <li class="navbar navbar-nav navbar-form">
+                            @using (Html.BeginForm("Search", "Posts", FormMethod.Post))
+                            {
+                                <div>
+                                    <input placeholder="Search Posts" type="text" id="searchTerm" name="searchTerm">
+                                    <input class="btn btn-info" type="submit" id="submitId" value="submit" />
+                                </div>
+                            }
+                        </li>
                     }
                     else
                     {

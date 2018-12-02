@@ -27,7 +27,7 @@
 
 @using (Html.BeginForm("Sort", "Posts"))
 {
-    @Html.DropDownList("sortOption", listItems, new {title = "Pick Sort", onchange = "submit();"})
+    @Html.DropDownList("sortOption", listItems, new { title = "Pick Sort", onchange = "submit();" })
 }
 
 <p style="text-align:center">
@@ -61,47 +61,47 @@
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-            <hr />
-            <input type="button" class="btn btn-sm btn-default" value="Post Comment" onclick="location.href='@Url.Action("Create", "Comments", new { id = item.PostID })'" /> 
-            <input type="button" class="btn btn-sm btn-default" value="View Comments" onclick="location.href='@Url.Action("Details", new { id = item.PostID })'" />
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.CategoryName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PostedTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Upvotes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Downvotes)
-        </td>
-        <td>
-            @{
-                if (User.Identity.GetUserId() == item.UserID)
-                {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.PostID });
-                    @Html.Label(" ");
-                    @Html.ActionLink("Delete", "Delete", new { id = item.PostID });
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+                <hr />
+                <input type="button" class="btn btn-sm btn-default" value="Post Comment" onclick="location.href='@Url.Action("Create", "Comments", new { id = item.PostID })'" />
+                <input type="button" class="btn btn-sm btn-default" value="View Comments" onclick="location.href='@Url.Action("Details", new { id = item.PostID })'" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostedTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Upvotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Downvotes)
+            </td>
+            <td>
+                @{
+                    if (User.Identity.GetUserId() == item.UserID)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.PostID });
+                        @Html.Label(" ");
+                        @Html.ActionLink("Delete", "Delete", new { id = item.PostID });
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID });
+                        @Html.Label(" ");
+                        @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
+                    }
                 }
-                else
-                {
-                    @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID });
-                    @Html.Label(" ");
-                    @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
-                }
-            }
-        </td>
-    </tr>
+            </td>
+        </tr>
     }
 </table>
