@@ -181,5 +181,11 @@ namespace CampusChat.Controllers
             }
             return View("Index", posts.ToList());
         }
+
+        [HttpPost]
+        public ActionResult Search(string searchTerm)
+        {
+            return View("Search", db.Posts.Where(p => p.Title.Contains(searchTerm) || searchTerm == null).ToList());
+        }
     }
 }
