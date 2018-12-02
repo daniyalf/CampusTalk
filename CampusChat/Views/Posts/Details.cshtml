@@ -67,8 +67,23 @@
         </dd>
 
     </dl>
+    <hr />
+    <h4>Comments</h4>
+    <table class="table">
+        @foreach (var item in Model.Comments)
+        {
+            <tr>
+                <td>
+                    <strong>@Html.DisplayFor(modelItem => item.AspNetUser.UserName)</strong>
+                    <br />
+                    <br />
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.PostedTime)</td>
+            </tr>
+        }
+    </table>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PostID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Return to posts", "Index")
 </p>

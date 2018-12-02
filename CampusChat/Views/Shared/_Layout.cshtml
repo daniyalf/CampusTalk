@@ -23,6 +23,7 @@
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
+                        <li><input type="button" style="text-align:right" class="navbar-btn btn btn-info" value="New Post" onclick="location.href='@Url.Action("Create", "Posts")'" /></li>
                         <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
                         <li>@Html.ActionLink("Comments", "Index", "Comments")</li>
                         <li>@Html.ActionLink("Messages", "Index", "Messages")</li>
@@ -41,8 +42,8 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>
+        <footer class="navbar-fixed-bottom navbar-inverse">
+            <p style="color:white; text-align:center">
                 @Html.ActionLink("About Us", "About", "Home")
                 | &copy; @DateTime.Now.Year Campus Chat
             </p>
