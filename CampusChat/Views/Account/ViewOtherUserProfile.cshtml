@@ -22,23 +22,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            Name: 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)  
+            @Html.ActionLink("Send Message", "../Messages/Create")
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.University.Name)
+            University
         </dt>
 
         <dd>
@@ -46,14 +39,14 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            Email: 
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Major)
+            Major: 
         </dt>
 
         <dd>
@@ -61,7 +54,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ExpectedGraduationDate)
+            Graduation Date: 
         </dt>
 
         <dd>
@@ -69,7 +62,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Biography)
+            About me: 
         </dt>
 
         <dd>

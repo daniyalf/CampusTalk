@@ -51,7 +51,7 @@
     @Html.DropDownList("sortOption", listItems, new { title = "Pick Sort", onchange = "submit();" })
 }
 <p>
-    @Html.ActionLink("New Post", "Create")
+
 @using (Html.BeginForm("Filter", "Posts"))
 {
     @Html.DropDownList("filterOption", filterListItems, new {title = "Pick Filter", onchange = "submit();" })
@@ -62,19 +62,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Content)
+            Content
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
+            Category
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.UserName)
+            Username
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PostedTime)
+            Time Posted
         </th>
         <th>
             @Html.Label("Rating")
