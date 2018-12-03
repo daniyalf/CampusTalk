@@ -3,23 +3,10 @@
 }
 
 <div id="container">
-
-    @if (User.Identity.IsAuthenticated)
-    {
-        //this will automatically pop up the post page when you go on the home page.
-    <script language="javascript">
-            window.location.href = "http://localhost:58732/Posts"
-    </script>
-
-    }
-    else
-    {
         <h1 style="text-align:center">Campus Chat</h1>
         <p class="lead" style="text-align:center">Welcome to Campus Chat, where you can connect with your college community.</p>
         <p style="text-align:center">
-            <a href="http://localhost:58732/Account/Login" class="btn btn-primary btn-lg">Login</a>
-            <a href="http://localhost:58732/Account/Register" class="btn btn-primary btn-lg">Register</a>
+            <input type="button" class="btn btn-primary btn-lg" value="Login" onclick="location.href='@Url.Action("Login", "Account")'" />
+            <input type="button" class="btn btn-primary btn-lg" value="Register" onclick="location.href='@Url.Action("Register", "Account")'" />
         </p>
-
-    }
 </div>

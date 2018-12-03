@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CampusChat.Models;
+using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
@@ -10,6 +12,10 @@ namespace CampusChat.Controllers
     {
         public ActionResult Index()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Posts");
+            }
             return View();
         }
 

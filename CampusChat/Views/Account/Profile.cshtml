@@ -42,7 +42,7 @@
             Message:
         </dt>
         <dd>
-            @Html.ActionLink("Send Message", "../Messages/Create")
+            @Html.ActionLink("Send Message", "Create", "Messages")
         </dd>
 
 
@@ -94,6 +94,6 @@
     </dl>
 
     <p style="text-align:center">
-        <a href="http://localhost:58732/Manage" class="btn btn-primary btn-lg">Account setting</a>
+        <input type="button" class="btn btn-primary btn-lg" value="Account Settings" onclick="location.href='@Url.Action("Index", "Manage")'" />
     </p>
 </div>
