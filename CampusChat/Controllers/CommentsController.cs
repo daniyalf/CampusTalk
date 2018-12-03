@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
+    [Authorize]
     public class CommentsController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
@@ -60,10 +61,11 @@ namespace CampusChat.Controllers
                 newComment.PostedTime = DateTime.Now;
                 newComment.Rating = 0;
                 newComment.PostID = db.Posts.Find(id).PostID;
+                String postIDParameter = newComment.PostID.ToString();
                 newComment.ParentID = comment.ParentID;
                 db.Comments.Add(newComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Posts", new { id = newComment.PostID });
             }
 
             ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", comment.UserID);

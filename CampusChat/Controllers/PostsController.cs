@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
@@ -232,7 +233,7 @@ namespace CampusChat.Controllers
             }
             return View("Index", posts.ToList());
         }
-        
+
         public ActionResult Filter(string filterOption)
         {
             var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
@@ -240,6 +241,12 @@ namespace CampusChat.Controllers
                 posts = db.Posts.Where(o => o.Category.CategoryName == filterOption);
             posts.OrderByDescending(o => ((o.Upvotes - o.Downvotes)/(DbFunctions.DiffDays(o.PostedTime, DateTime.Now) + 1)));
             return View("Index", posts.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Search(string searchTerm)
+        {
+            return View("Search", db.Posts.Where(p => p.Title.Contains(searchTerm) || searchTerm == null).ToList());
         }
     }
 }

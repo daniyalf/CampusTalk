@@ -48,7 +48,7 @@
 
 @using (Html.BeginForm("Sort", "Posts"))
 {
-    @Html.DropDownList("sortOption", listItems, new {title = "Pick Sort", onchange = "submit();"})
+    @Html.DropDownList("sortOption", listItems, new { title = "Pick Sort", onchange = "submit();" })
 }
 
 @using (Html.BeginForm("Filter", "Posts"))
@@ -56,8 +56,8 @@
     @Html.DropDownList("filterOption", filterListItems, new {title = "Pick Filter", onchange = "submit();" })
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
+<p style="text-align:center">
+    <input type="button" style="text-align:right" class="btn btn-lg btn-default" value="New Post" onclick="location.href='@Url.Action("Create")'" />
 </p>
 <table class="table">
     <tr>
@@ -96,6 +96,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Content)
+            <hr />
+            <input type="button" class="btn btn-sm btn-default" value="Post Comment" onclick="location.href='@Url.Action("Create", "Comments", new { id = item.PostID })'" />
+            <input type="button" class="btn btn-sm btn-default" value="View Comments" onclick="location.href='@Url.Action("Details", new { id = item.PostID })'" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Category.CategoryName)
@@ -180,8 +183,6 @@
                     @Html.Label(" ");
                     @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
                 }
-                @Html.Label(" ");
-                @Html.ActionLink("Comment", "Create", "Comments", new { id = item.PostID }, null);
                 @Html.Label(" ");
                 @Html.ActionLink("View User", "ViewProfile", "Account", new { userID = item.UserID }, null);
             }
