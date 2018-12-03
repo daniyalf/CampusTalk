@@ -32,23 +32,22 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            Name: 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            Message:
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.LastName)
+            @Html.ActionLink("Send Message", "../Messages/Create")
         </dd>
 
+
         <dt>
-            @Html.DisplayNameFor(model => model.University.Name)
+            College:
         </dt>
 
         <dd>
@@ -56,7 +55,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            Email: 
         </dt>
 
         <dd>
@@ -64,7 +63,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Major)
+            Major: 
         </dt>
 
         <dd>
@@ -72,7 +71,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ExpectedGraduationDate)
+            Graduation Date: 
         </dt>
 
         <dd>
@@ -95,6 +94,6 @@
     </dl>
 
     <p style="text-align:center">
-        <a href="http://localhost:58732/" class="btn btn-primary btn-lg">Privacy Preferences</a>
+        <a href="http://localhost:58732/Manage" class="btn btn-primary btn-lg">Account setting</a>
     </p>
 </div>
