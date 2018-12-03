@@ -27,24 +27,23 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
+            @Html.Label("From")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AspNetUser.Email)
+            @Html.DisplayFor(model => model.AspNetUser.UserName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.AspNetUser1.Email)
+            @Html.Label("To")
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.AspNetUser1.Email)
+            @Html.DisplayFor(model => model.AspNetUser1.UserName)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MessageID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Inbox", "Index")
 </p>

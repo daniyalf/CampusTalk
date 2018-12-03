@@ -86,9 +86,9 @@
             @Html.DisplayFor(model => model.Biography)
         </dd>
         <dd>
-            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { id = Model.Id }))
             {
-                <input type="Button" name="EditBio" value="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
+                <input type="Text" name="editText" />
             }
         </dd>
     </dl>

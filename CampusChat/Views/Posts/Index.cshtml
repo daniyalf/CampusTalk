@@ -50,12 +50,12 @@
 {
     @Html.DropDownList("sortOption", listItems, new { title = "Pick Sort", onchange = "submit();" })
 }
-
+<p>
+    @Html.ActionLink("New Post", "Create")
 @using (Html.BeginForm("Filter", "Posts"))
 {
     @Html.DropDownList("filterOption", filterListItems, new {title = "Pick Filter", onchange = "submit();" })
 }
-
 <p style="text-align:center">
     <input type="button" style="text-align:right" class="btn btn-lg btn-default" value="New Post" onclick="location.href='@Url.Action("Create")'" />
 </p>
