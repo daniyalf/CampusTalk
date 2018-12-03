@@ -42,7 +42,7 @@
 
             <td>
 
-                @Html.ActionLink("Reply", "ReplyTest", new { id = item.MessageID}) |
+                @Html.ActionLink("Reply", "../Messages/Create", new { id = item.MessageID}) |
                 @Html.ActionLink("Details", "Details", new { id = item.MessageID }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
 
