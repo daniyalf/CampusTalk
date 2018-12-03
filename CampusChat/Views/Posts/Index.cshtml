@@ -1,4 +1,5 @@
 @using Microsoft.AspNet.Identity;
+@using CampusChat.Models;
 @model IEnumerable<CampusChat.Models.Post>
 
 @{
@@ -25,13 +26,38 @@
     });
 }
 
-@using (Html.BeginForm("Sort", "Posts"))
-{
-    @Html.DropDownList("sortOption", listItems, new {title = "Pick Sort", onchange = "submit();"})
+@{ 
+    List<SelectListItem> filterListItems = new List<SelectListItem>();
+    CategoryViewModels catViewModel = new CategoryViewModels();
+
+    filterListItems.Add(new SelectListItem
+    {
+        Text = "All",
+        Value = "All"
+    });
+
+    foreach(var item in catViewModel.db.Categories)
+    {
+        filterListItems.Add(new SelectListItem
+        {
+            Text = item.CategoryName,
+            Value = item.CategoryName
+        });
+    }
 }
 
+@using (Html.BeginForm("Sort", "Posts"))
+{
+    @Html.DropDownList("sortOption", listItems, new { title = "Pick Sort", onchange = "submit();" })
+}
 <p>
     @Html.ActionLink("New Post", "Create")
+@using (Html.BeginForm("Filter", "Posts"))
+{
+    @Html.DropDownList("filterOption", filterListItems, new {title = "Pick Filter", onchange = "submit();" })
+}
+<p style="text-align:center">
+    <input type="button" style="text-align:right" class="btn btn-lg btn-default" value="New Post" onclick="location.href='@Url.Action("Create")'" />
 </p>
 <table class="table">
     <tr>
@@ -51,6 +77,9 @@
             @Html.DisplayNameFor(model => model.PostedTime)
         </th>
         <th>
+            @Html.Label("Rating")
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Upvotes)
         </th>
         <th>
@@ -61,46 +90,103 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Upvotes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Downvotes)
-            </td>
-            <td>
-                @{
-                    if (User.Identity.GetUserId() == item.UserID)
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+            <hr />
+            <input type="button" class="btn btn-sm btn-default" value="Post Comment" onclick="location.href='@Url.Action("Create", "Comments", new { id = item.PostID })'" />
+            <input type="button" class="btn btn-sm btn-default" value="View Comments" onclick="location.href='@Url.Action("Details", new { id = item.PostID })'" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+        </td>
+        <td>
+            @Html.ActionLink(item.AspNetUser.UserName, "ViewProfile", "Account", new { userID = item.UserID }, null)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostedTime)
+        </td>
+        <td>
+            @{
+                try
+                {
+                    if ((double)item.Upvotes / ((double)(item.Downvotes)) > 4)
                     {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.PostID });
-                        @Html.Label(" ");
-                        @Html.ActionLink("Delete", "Delete", new { id = item.PostID });
+                        @Html.Label("A");
+                    }
+                    else if ((double)item.Upvotes / ((double)(item.Downvotes)) > 1.5)
+                    {
+                        @Html.Label("B");
+                    }
+                    else if ((double)item.Upvotes / ((double)(item.Downvotes)) > 0.666)
+                    {
+                        @Html.Label("C");
+                    }
+                    else if (item.Upvotes == item.Downvotes)
+                    {
+                        @Html.Label("C");
+                    }
+                    else if ((double)item.Upvotes / ((double)(item.Downvotes)) > 0.25)
+                    {
+                        @Html.Label("D");
                     }
                     else
                     {
-                        @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID });
-                        @Html.Label(" ");
-                        @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
+                        @Html.Label("F");
                     }
-                    @Html.Label(" ");
-                    @Html.ActionLink("Comment", "Create", "Comments", new { id = item.PostID }, null);
                 }
-            </td>
-        </tr>
+                catch (DivideByZeroException e)
+                {
+                    if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 4)
+                    {
+                        @Html.Label("A");
+                    }
+                    else if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 1.5)
+                    {
+                        @Html.Label("B");
+                    }
+                    else if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 0.666)
+                    {
+                        @Html.Label("C");
+                    }
+                    else if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 0.25)
+                    {
+                        @Html.Label("D");
+                    }
+                    else
+                    {
+                        @Html.Label("F");
+                    }
+                }
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Upvotes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Downvotes)
+        </td>
+        <td>
+            @{
+                if (User.Identity.GetUserId() == item.UserID)
+                {
+                    <input type="button" class="btn btn-sm btn-default" value="Edit" onclick="location.href='@Url.Action("Edit", new { id = item.PostID })'" />
+                    <br />
+                    <br />
+                    <input type="button" class="btn btn-sm btn-default" value="Delete" onclick="location.href='@Url.Action("Delete", new { id = item.PostID })'" />
+                }
+                else
+                {
+                    <input type="button" class="btn btn-sm btn-info" value="Upvote" onclick="location.href='@Url.Action("Upvote", new { id = item.PostID })'" />
+                    <br />
+                    <br />
+                    <input type="button" class="btn btn-sm btn-danger" value="Downvote" onclick="location.href='@Url.Action("Downvote", new { id = item.PostID })'" />
+                }
+            }
+        </td>
+    </tr>
     }
 </table>

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace CampusChat.Controllers
 {
+    [Authorize]
     public class MessagesController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();

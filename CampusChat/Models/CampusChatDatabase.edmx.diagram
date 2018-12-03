@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ee8eccacae094f56bc3463fb832c58b1" Name="Diagram1">
+      <Diagram DiagramId="ee8eccacae094f56bc3463fb832c58b1" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="CampusChatDatabaseModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CampusChatDatabaseModel.AspNetRole" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CampusChatDatabaseModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
@@ -27,6 +27,9 @@
         <AssociationConnector Association="CampusChatDatabaseModel.FK_Post_User" ManuallyRouted="false" />
         <AssociationConnector Association="CampusChatDatabaseModel.FK_Post_Category" ManuallyRouted="false" />
         <AssociationConnector Association="CampusChatDatabaseModel.FK_Comment_Post" ManuallyRouted="false" />
+        <AssociationConnector Association="CampusChatDatabaseModel.FK_Post_Post" />
+        <EntityTypeShape EntityType="CampusChatDatabaseModel.UserVote" Width="1.5" PointX="5.25" PointY="13.375" />
+        <AssociationConnector Association="CampusChatDatabaseModel.FK_UserVote_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

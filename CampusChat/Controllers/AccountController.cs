@@ -15,7 +15,6 @@ using System.IO;
 
 namespace CampusChat.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
@@ -61,8 +60,15 @@ namespace CampusChat.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
         }
 
         //
@@ -143,7 +149,14 @@ namespace CampusChat.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         //
@@ -505,7 +518,7 @@ namespace CampusChat.Controllers
             }
         }
 
-        [AllowAnonymous]
+        [Authorize]
         public ActionResult Profile()
         {
             string userID = User.Identity.GetUserId();
@@ -515,6 +528,7 @@ namespace CampusChat.Controllers
             return View(aspnetuser);
         }
 
+        [Authorize]
         public ActionResult ChangeProfilePicture(HttpPostedFileBase file)
         {
             AspNetUser aspnetuser = null;
@@ -532,18 +546,26 @@ namespace CampusChat.Controllers
             return View("Profile", aspnetuser);
         }
 
+        [Authorize]
         public ActionResult EditBiography()
         {
             AspNetUser aspnetuser = db.AspNetUsers.Find(User.Identity.GetUserId());
             return View("EditBio", aspnetuser);
         }
 
+        [Authorize]
         public ActionResult BioEdit(string editText)
         {
             AspNetUser aspnetuser = db.AspNetUsers.Find(User.Identity.GetUserId());
             aspnetuser.Biography = editText;
             db.SaveChanges();
             return View("Profile", aspnetuser);
+        }
+
+        public ActionResult ViewProfile(string userID)
+        {
+            AspNetUser aspnetuser = db.AspNetUsers.Find(userID);
+            return View("ViewOtherUserProfile", aspnetuser);
         }
         #endregion
     }

@@ -1,0 +1,79 @@
+﻿@model CampusChat.Models.AspNetUser
+
+@{
+    ViewBag.Title = "ViewOtherUserProfile";
+}
+
+<h2>Profile</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.UserName)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfilePic)
+        </dt>
+
+        <dd>
+            @{
+                var imgSource = String.Format("data:image/gif;base64,{0}", Model.ProfilePic);
+            }
+            <img src="@imgSource" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.University.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.University.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Major)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Major)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpectedGraduationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpectedGraduationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Biography)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Biography)
+        </dd>
+    </dl>
+</div>

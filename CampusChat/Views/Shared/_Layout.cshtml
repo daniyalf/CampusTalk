@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Campus Chat</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
@@ -23,11 +23,19 @@
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
-                        <li>@Html.ActionLink("Comments", "Index", "Comments")</li>
-                        <li>@Html.ActionLink("Messages", "Index", "Messages")</li>
-                        <li>@Html.ActionLink("Universities", "Index", "Universities")</li>
-                        <li>@Html.ActionLink("Users", "Index", "AspnetUsers")</li>
+                        <li><input type="button" style="text-align:right" class="navbar-nav navbar-btn btn btn-info" value="New Post" onclick="location.href='@Url.Action("Create", "Posts")'" /></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li><button type="submit" class="navbar-nav navbar-btn btn btn-info" onclick="location.href='@Url.Action("Index", "Messages")'"><i class="fa fa-comments-o"></i></button></li>
+                        <li>&nbsp;&nbsp;</li>
+                        <li class="navbar navbar-nav navbar-form">
+                            @using (Html.BeginForm("Search", "Posts", FormMethod.Post))
+                            {
+                                <div>
+                                    <input placeholder="Search Posts" type="text" id="searchTerm" name="searchTerm">
+                                    <input class="btn btn-info" type="submit" id="submitId" value="submit" />
+                                </div>
+                            }
+                        </li>
                     }
                     else
                     {
@@ -41,22 +49,18 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p class="modal-footer">
+        <footer class="navbar-fixed-bottom navbar-inverse">
+            <p style="color:white; text-align:center">
                 @Html.ActionLink("About Us", "About", "Home")
                 | &copy; @DateTime.Now.Year Campus Chat
-
             </p>
         </footer> 
-
         <style>
             textarea {
                 resize: none
             }
         </style>
-
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

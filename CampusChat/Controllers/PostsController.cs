@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace CampusChat.Controllers
 {
+    [Authorize]
     public class PostsController : Controller
     {
         private CampusChatDatabaseEntities db = new CampusChatDatabaseEntities();
@@ -20,7 +21,7 @@ namespace CampusChat.Controllers
         public ActionResult Index()
         {
             var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
-            posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+            posts = db.Posts.OrderByDescending(o => (((double)o.Upvotes/(double)(o.Downvotes + 0.00000001))/(DbFunctions.DiffDays(o.PostedTime, DateTime.Now) + 1)));
             return View(posts.ToList());
         }
 
@@ -148,16 +149,68 @@ namespace CampusChat.Controllers
 
         public ActionResult Upvote(int? id)
         {
-            var post = db.Posts.Find(id);
-            post.Upvotes++;
+            string user = User.Identity.GetUserId();
+            int postID = (int)id;
+            if(!db.UserVotes.Any(o => o.UserID == user && o.PostID == postID))
+            {
+                var post = db.Posts.Find(id);
+                post.Upvotes++;
+                UserVote vote = new UserVote();
+                vote.UserID = User.Identity.GetUserId();
+                vote.PostID = (int)id;
+                vote.Vote = true;
+                db.UserVotes.Add(vote);
+            }
+            else if(db.UserVotes.Any(o => o.UserID == user && o.PostID == postID && o.Vote == true))
+            {
+                var post = db.Posts.Find(id);
+                post.Upvotes--;
+                UserVote vote = db.UserVotes.FirstOrDefault(o => o.UserID == user && o.PostID == postID);
+                db.UserVotes.Remove(vote);
+            }
+            else if(db.UserVotes.Any(o => o.UserID == user && o.PostID == postID && o.Vote == false))
+            {
+                var post = db.Posts.Find(id);
+                post.Upvotes ++;
+                post.Downvotes --;
+                UserVote vote = db.UserVotes.FirstOrDefault(o => o.UserID == user && o.PostID == postID);
+                vote.Vote = true;
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public ActionResult Downvote(int? id)
         {
-            var post = db.Posts.Find(id);
-            post.Downvotes++;
+            string user = User.Identity.GetUserId();
+            int postID = (int)id;
+            
+            if(!db.UserVotes.Any(o => o.UserID == user && o.PostID == postID))
+            {
+                var post = db.Posts.Find(id);
+                post.Downvotes++;
+                UserVote vote = new UserVote();
+                vote.UserID = User.Identity.GetUserId();
+                vote.PostID = (int)id;
+                vote.Vote = false;
+                db.UserVotes.Add(vote);
+            }
+            else if(db.UserVotes.Any(o => o.UserID == user && o.PostID == postID && o.Vote == true))
+            {
+                var post = db.Posts.Find(id);
+                post.Upvotes--;
+                post.Downvotes++;
+                UserVote vote = db.UserVotes.FirstOrDefault(o => o.UserID == user && o.PostID == postID);
+                vote.Vote = false;
+            }
+            else if(db.UserVotes.Any(o => o.UserID == user && o.PostID == postID && o.Vote == false))
+            {
+                var post = db.Posts.Find(id);
+                post.Downvotes--;
+                UserVote vote = db.UserVotes.FirstOrDefault(o => o.UserID == user && o.PostID == postID);
+                db.UserVotes.Remove(vote);
+            }
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -172,13 +225,28 @@ namespace CampusChat.Controllers
             }
             else if(sortOption == "Top")
             {
-                posts = db.Posts.OrderByDescending(o => (o.Upvotes/(o.Downvotes + 1)));
+                posts = db.Posts.OrderByDescending(o => ((double)o.Upvotes/(double)(o.Downvotes + 0.00000001)));
             }
             else if(sortOption == "Hot")
             {
-                posts = db.Posts.OrderBy(o => (DbFunctions.DiffHours(o.PostedTime, DateTime.Now))/(o.Upvotes + 1));
+                posts = db.Posts.OrderByDescending(o => (((double)o.Upvotes/(double)(o.Downvotes + 0.00000001))/(DbFunctions.DiffDays(o.PostedTime, DateTime.Now) + 1)));
             }
             return View("Index", posts.ToList());
+        }
+
+        public ActionResult Filter(string filterOption)
+        {
+            var posts = db.Posts.Include(p => p.AspNetUser).Include(p => p.Category);
+            if(!filterOption.Equals("All"))
+                posts = db.Posts.Where(o => o.Category.CategoryName == filterOption);
+            posts.OrderByDescending(o => ((o.Upvotes - o.Downvotes)/(DbFunctions.DiffDays(o.PostedTime, DateTime.Now) + 1)));
+            return View("Index", posts.ToList());
+        }
+
+        [HttpPost]
+        public ActionResult Search(string searchTerm)
+        {
+            return View("Search", db.Posts.Where(p => p.Title.Contains(searchTerm) || searchTerm == null).ToList());
         }
     }
 }
