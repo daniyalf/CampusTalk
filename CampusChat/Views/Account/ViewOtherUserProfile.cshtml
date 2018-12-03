@@ -1,13 +1,13 @@
 ﻿@model CampusChat.Models.AspNetUser
 
 @{
-    ViewBag.Title = "Profile";
+    ViewBag.Title = "ViewOtherUserProfile";
 }
 
 <h2>Profile</h2>
 
 <div>
-    <h4>@User.Identity.Name</h4>
+    <h4>@Html.DisplayFor(model => model.UserName)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,16 +19,6 @@
                 var imgSource = String.Format("data:image/gif;base64,{0}", Model.ProfilePic);
             }
             <img src="@imgSource" />
-        </dd>
-        <dt>
-            Change profile picture:
-        </dt>
-        <dd>
-            @using (Html.BeginForm("ChangeProfilePicture", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <input type="file" name="file" />
-                <input type="submit" value="OK" />
-            }
         </dd>
 
         <dt>
@@ -62,7 +52,6 @@
         <dd>
             @Html.DisplayFor(model => model.Email)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Major)
         </dt>
@@ -86,15 +75,5 @@
         <dd>
             @Html.DisplayFor(model => model.Biography)
         </dd>
-        <dd>
-            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <input type="Button" name="EditBio" value="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
-            }
-        </dd>
     </dl>
-
-    <p style="text-align:center">
-        <a href="http://localhost:58732/" class="btn btn-primary btn-lg">Privacy Preferences</a>
-    </p>
 </div>

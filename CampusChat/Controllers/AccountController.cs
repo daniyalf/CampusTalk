@@ -545,6 +545,12 @@ namespace CampusChat.Controllers
             db.SaveChanges();
             return View("Profile", aspnetuser);
         }
+
+        public ActionResult ViewProfile(string userID)
+        {
+            AspNetUser aspnetuser = db.AspNetUsers.Find(userID);
+            return View("ViewOtherUserProfile", aspnetuser);
+        }
         #endregion
     }
 }

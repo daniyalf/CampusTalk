@@ -1,4 +1,5 @@
 @using Microsoft.AspNet.Identity;
+@using CampusChat.Models;
 @model IEnumerable<CampusChat.Models.Post>
 
 @{
@@ -25,9 +26,34 @@
     });
 }
 
+@{ 
+    List<SelectListItem> filterListItems = new List<SelectListItem>();
+    CategoryViewModels catViewModel = new CategoryViewModels();
+
+    filterListItems.Add(new SelectListItem
+    {
+        Text = "All",
+        Value = "All"
+    });
+
+    foreach(var item in catViewModel.db.Categories)
+    {
+        filterListItems.Add(new SelectListItem
+        {
+            Text = item.CategoryName,
+            Value = item.CategoryName
+        });
+    }
+}
+
 @using (Html.BeginForm("Sort", "Posts"))
 {
     @Html.DropDownList("sortOption", listItems, new {title = "Pick Sort", onchange = "submit();"})
+}
+
+@using (Html.BeginForm("Filter", "Posts"))
+{
+    @Html.DropDownList("filterOption", filterListItems, new {title = "Pick Filter", onchange = "submit();" })
 }
 
 <p>
@@ -51,6 +77,9 @@
             @Html.DisplayNameFor(model => model.PostedTime)
         </th>
         <th>
+            @Html.Label("Rating")
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Upvotes)
         </th>
         <th>
@@ -61,46 +90,102 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostedTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Upvotes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Downvotes)
-            </td>
-            <td>
-                @{
-                    if (User.Identity.GetUserId() == item.UserID)
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PostedTime)
+        </td>
+        <td>
+            @{
+                try
+                {
+                    if ((double)item.Upvotes / ((double)(item.Downvotes)) > 4)
                     {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.PostID });
-                        @Html.Label(" ");
-                        @Html.ActionLink("Delete", "Delete", new { id = item.PostID });
+                        @Html.Label("A");
+                    }
+                    else if ((double)item.Upvotes / ((double)(item.Downvotes)) > 1.5)
+                    {
+                        @Html.Label("B");
+                    }
+                    else if ((double)item.Upvotes / ((double)(item.Downvotes)) > 0.666)
+                    {
+                        @Html.Label("C");
+                    }
+                    else if (item.Upvotes == item.Downvotes)
+                    {
+                        @Html.Label("C");
+                    }
+                    else if ((double)item.Upvotes / ((double)(item.Downvotes)) > 0.25)
+                    {
+                        @Html.Label("D");
                     }
                     else
                     {
-                        @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID });
-                        @Html.Label(" ");
-                        @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
+                        @Html.Label("F");
                     }
-                    @Html.Label(" ");
-                    @Html.ActionLink("Comment", "Create", "Comments", new { id = item.PostID }, null);
                 }
-            </td>
-        </tr>
+                catch (DivideByZeroException e)
+                {
+                    if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 4)
+                    {
+                        @Html.Label("A");
+                    }
+                    else if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 1.5)
+                    {
+                        @Html.Label("B");
+                    }
+                    else if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 0.666)
+                    {
+                        @Html.Label("C");
+                    }
+                    else if (((double)(item.Upvotes + 1)) / ((double)(item.Downvotes + 1)) > 0.25)
+                    {
+                        @Html.Label("D");
+                    }
+                    else
+                    {
+                        @Html.Label("F");
+                    }
+                }
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Upvotes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Downvotes)
+        </td>
+        <td>
+            @{
+                if (User.Identity.GetUserId() == item.UserID)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.PostID });
+                    @Html.Label(" ");
+                    @Html.ActionLink("Delete", "Delete", new { id = item.PostID });
+                }
+                else
+                {
+                    @Html.ActionLink("Upvote", "Upvote", new { id = item.PostID });
+                    @Html.Label(" ");
+                    @Html.ActionLink("Downvote", "Downvote", new { id = item.PostID });
+                }
+                @Html.Label(" ");
+                @Html.ActionLink("Comment", "Create", "Comments", new { id = item.PostID }, null);
+                @Html.Label(" ");
+                @Html.ActionLink("View User", "ViewProfile", "Account", new { userID = item.UserID }, null);
+            }
+        </td>
+    </tr>
     }
 </table>

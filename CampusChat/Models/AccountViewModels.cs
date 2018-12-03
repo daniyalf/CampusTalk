@@ -70,6 +70,7 @@ namespace CampusChat.Models
 
         [Required]
         [EmailAddress]
+        [EduEmail]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -142,5 +143,25 @@ namespace CampusChat.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EduEmailAttribute : ValidationAttribute
+    {
+        string email = "";
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            RegisterViewModel regViewModel = (RegisterViewModel)validationContext.ObjectInstance;
+            email = regViewModel.Email;
+            if((email.Substring(email.Length - 4, 4)).Equals(".edu"))
+                return ValidationResult.Success;
+            return new ValidationResult(GetErrorMessage());
+        }
+
+        private string GetErrorMessage()
+        {
+            return $"School email addresses must end in '.edu'.";
+        }
     }
 }
