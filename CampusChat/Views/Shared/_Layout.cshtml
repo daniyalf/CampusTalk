@@ -23,12 +23,10 @@
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><input type="button" style="text-align:right" class="navbar-btn btn btn-info" value="New Post" onclick="location.href='@Url.Action("Create", "Posts")'" /></li>
-                        <li>@Html.ActionLink("Categories", "Index", "Categories")</li>
-                        <li>@Html.ActionLink("Comments", "Index", "Comments")</li>
-                        <li>@Html.ActionLink("Messages", "Index", "Messages")</li>
-                        <li>@Html.ActionLink("Universities", "Index", "Universities")</li>
-                        <li>@Html.ActionLink("Users", "Index", "AspnetUsers")</li>
+                        <li><input type="button" style="text-align:right" class="navbar-nav navbar-btn btn btn-info" value="New Post" onclick="location.href='@Url.Action("Create", "Posts")'" /></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li><button type="submit" class="navbar-nav navbar-btn btn btn-info" onclick="location.href='@Url.Action("Index", "Messages")'"><i class="fa fa-comments-o"></i></button></li>
+                        <li>&nbsp;&nbsp;</li>
                         <li class="navbar navbar-nav navbar-form">
                             @using (Html.BeginForm("Search", "Posts", FormMethod.Post))
                             {
