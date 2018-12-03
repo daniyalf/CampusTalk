@@ -1,20 +1,15 @@
 ﻿@model IEnumerable<CampusChat.Models.Message>
 
 @{
-    ViewBag.Title = "Inbox";
+    ViewBag.Title = "Sent Messages";
 }
 
-<h2 style= "text-align:center">Inbox</h2>
-
-<p>
-    @Html.ActionLink("New Message", "Create")
-</p>
-
+<h2>Sent Messages</h2>
 
 <table class="table">
     <tr>
         <th>
-            From
+            Sent To
         <th>
         <th>
             Message
@@ -22,8 +17,8 @@
         <th>
             @Html.DisplayNameFor(model => model.SentTime)
         </th>
+        <th></th>
     </tr>
-    
 
     @foreach (var item in Model)
     {
@@ -39,16 +34,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SentTime)
             </td>
-
-            <td>
-
-                @Html.ActionLink("Reply", "ReplyTest", new { id = item.MessageID}) |
-                @Html.ActionLink("Details", "Details", new { id = item.MessageID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
-
-            </td>
         </tr>
     }
+    <div>
+        @Html.ActionLink("Back to Inbox", "Index")
+    </div>
 
 </table>
-<p>@Html.ActionLink("See Sent Messages", "SentMessages")</p>
