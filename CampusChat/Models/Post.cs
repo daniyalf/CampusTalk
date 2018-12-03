@@ -33,5 +33,7 @@ namespace CampusChat.Models
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual Post Post1 { get; set; }
+        public virtual Post Post2 { get; set; }
     }
 }

@@ -134,6 +134,15 @@
           <Property Name="Name" Type="varchar" MaxLength="75" Nullable="false" />
           <Property Name="State" Type="char" MaxLength="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserVote">
+          <Key>
+            <PropertyRef Name="UserVoteID" />
+          </Key>
+          <Property Name="UserVoteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="Vote" Type="bit" Nullable="false" />
+        </EntityType>
         <Association Name="FK_AspNetUsers_University">
           <End Role="University" Type="Self.University" Multiplicity="0..1" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
@@ -143,18 +152,6 @@
             </Principal>
             <Dependent Role="AspNetUsers">
               <PropertyRef Name="UniversityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Comment_Post">
-          <End Role="Post" Type="Self.Post" Multiplicity="1" />
-          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Post">
-              <PropertyRef Name="PostID" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="PostID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -248,6 +245,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Post_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="Post1" Type="Self.Post" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Post1">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_User">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -256,6 +265,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Post">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserVote_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserVote" Type="Self.UserVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserVote">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -273,13 +294,10 @@
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="University" EntityType="Self.University" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserVote" EntityType="Self.UserVote" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_AspNetUsers_University" Association="Self.FK_AspNetUsers_University">
             <End Role="University" EntitySet="University" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Comment_Post" Association="Self.FK_Comment_Post">
-            <End Role="Post" EntitySet="Post" />
-            <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
           <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -309,9 +327,17 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="Post" EntitySet="Post" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_Post" Association="Self.FK_Post_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Post1" EntitySet="Post" />
+          </AssociationSet>
           <AssociationSet Name="FK_Post_User" Association="Self.FK_Post_User">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserVote_AspNetUsers" Association="Self.FK_UserVote_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserVote" EntitySet="UserVote" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -397,6 +423,7 @@
           <NavigationProperty Name="Messages" Relationship="Self.FK_Message_AspNetUsers" FromRole="AspNetUsers" ToRole="Message" />
           <NavigationProperty Name="Messages1" Relationship="Self.FK_Message_AspNetUsers1" FromRole="AspNetUsers" ToRole="Message" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Post_User" FromRole="AspNetUsers" ToRole="Post" />
+          <NavigationProperty Name="UserVotes" Relationship="CampusChatDatabaseModel.FK_UserVote_AspNetUsers" FromRole="AspNetUser" ToRole="UserVote" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -447,6 +474,8 @@
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Post_User" FromRole="Post" ToRole="AspNetUsers" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Post_Category" FromRole="Post" ToRole="Category" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Post" FromRole="Post" ToRole="Comment" />
+          <NavigationProperty Name="Post1" Relationship="CampusChatDatabaseModel.FK_Post_Post" FromRole="Post" ToRole="Post1" />
+          <NavigationProperty Name="Post2" Relationship="CampusChatDatabaseModel.FK_Post_Post" FromRole="Post1" ToRole="Post" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -646,7 +675,50 @@
             <End Role="Post" EntitySet="Posts" />
             <End Role="Comment" EntitySet="Comments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Post_Post" Association="CampusChatDatabaseModel.FK_Post_Post">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Post1" EntitySet="Posts" />
+          </AssociationSet>
+          <EntitySet Name="UserVotes" EntityType="CampusChatDatabaseModel.UserVote" />
+          <AssociationSet Name="FK_UserVote_AspNetUsers" Association="CampusChatDatabaseModel.FK_UserVote_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserVote" EntitySet="UserVotes" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Post_Post">
+          <End Type="CampusChatDatabaseModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="CampusChatDatabaseModel.Post" Role="Post1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Post1">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserVote">
+          <Key>
+            <PropertyRef Name="UserVoteID" />
+          </Key>
+          <Property Name="UserVoteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="Vote" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="CampusChatDatabaseModel.FK_UserVote_AspNetUsers" FromRole="UserVote" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_UserVote_AspNetUsers">
+          <End Type="CampusChatDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="CampusChatDatabaseModel.UserVote" Role="UserVote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserVote">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -787,6 +859,16 @@
                 <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserVotes">
+            <EntityTypeMapping TypeName="CampusChatDatabaseModel.UserVote">
+              <MappingFragment StoreEntitySet="UserVote">
+                <ScalarProperty Name="Vote" ColumnName="Vote" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserVoteID" ColumnName="UserVoteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

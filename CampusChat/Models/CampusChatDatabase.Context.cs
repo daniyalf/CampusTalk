@@ -37,5 +37,6 @@ namespace CampusChat.Models
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<University> Universities { get; set; }
+        public virtual DbSet<UserVote> UserVotes { get; set; }
     }
 }

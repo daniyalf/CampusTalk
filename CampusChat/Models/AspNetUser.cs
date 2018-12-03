@@ -24,6 +24,7 @@ namespace CampusChat.Models
             this.Messages = new HashSet<Message>();
             this.Messages1 = new HashSet<Message>();
             this.Posts = new HashSet<Post>();
+            this.UserVotes = new HashSet<UserVote>();
         }
     
         public string Id { get; set; }
@@ -62,5 +63,7 @@ namespace CampusChat.Models
         public virtual ICollection<Message> Messages1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Posts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserVote> UserVotes { get; set; }
     }
 }
