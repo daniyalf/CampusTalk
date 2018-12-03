@@ -1,0 +1,22 @@
+﻿@model CampusChat.Models.Message
+@{
+    ViewBag.Title = "Reply";
+}
+
+<h2>Reply</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Reply</h4>
+
+        <div class="form-group">
+            @using (Html.BeginForm("Reply", "Message", FormMethod.Post, new { id = Model.MessageID }))
+            {
+                <input type="Text" name="content" />
+            }
+        </div>
+    </div>
+}
