@@ -15,12 +15,12 @@
     <tr>
         <th>
             From
-        <th>
+        </th>
         <th>
             Message
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SentTime)
+            @Html.Label("Sent Time")
         </th>
     </tr>
     
@@ -41,10 +41,9 @@
             </td>
 
             <td>
-
-                @Html.ActionLink("Reply", "../Messages/Create", new { id = item.MessageID}) |
-                @Html.ActionLink("Details", "Details", new { id = item.MessageID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
+                <input type="button" class="btn btn-sm btn-info" value="Reply" onclick="location.href='@Url.Action("Create", new { id = item.MessageID })'" />
+                <input type="button" class="btn btn-sm btn-default" value="Details" onclick="location.href='@Url.Action("Details", new { id = item.MessageID })'" />
+                <input type="button" class="btn btn-sm btn-danger" value="Delete" onclick="location.href='@Url.Action("Delete", new { id = item.MessageID })'" />
 
             </td>
         </tr>

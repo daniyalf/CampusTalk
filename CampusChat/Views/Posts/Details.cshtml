@@ -4,12 +4,27 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Title)</h2>
 
 <div>
-    <h4>Post</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.Label("Username")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.Label("Category")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Content)
         </dt>
@@ -19,7 +34,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PostedTime)
+            @Html.Label("Time Posted")
         </dt>
 
         <dd>
@@ -40,30 +55,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.Downvotes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AspNetUser.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AspNetUser.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.CategoryName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.CategoryName)
         </dd>
 
     </dl>

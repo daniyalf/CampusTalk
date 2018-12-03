@@ -4,14 +4,13 @@
     ViewBag.Title = "Profile";
 }
 
-<h2>Profile</h2>
+<h2>@User.Identity.Name</h2>
 
 <div>
-    <h4>@User.Identity.Name</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ProfilePic)
+            @Html.Label("Profile Pic")
         </dt>
 
         <dd>
@@ -32,7 +31,7 @@
         </dd>
 
         <dt>
-            Name: 
+            Name:
         </dt>
 
         <dd>
@@ -55,7 +54,7 @@
         </dd>
 
         <dt>
-            Email: 
+            Email:
         </dt>
 
         <dd>
@@ -63,7 +62,7 @@
         </dd>
 
         <dt>
-            Major: 
+            Major:
         </dt>
 
         <dd>
@@ -71,7 +70,7 @@
         </dd>
 
         <dt>
-            Graduation Date: 
+            Graduation Date:
         </dt>
 
         <dd>
@@ -86,9 +85,9 @@
             @Html.DisplayFor(model => model.Biography)
         </dd>
         <dd>
-            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { id = Model.Id }))
+            @using (Html.BeginForm("EditBiography", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <input type="Text" name="editText" />
+                <input type="Button" name="EditBio" value="Edit Biography" onclick="@("window.location.href='" + @Url.Action("EditBiography", "Account") + "'");" />
             }
         </dd>
     </dl>
