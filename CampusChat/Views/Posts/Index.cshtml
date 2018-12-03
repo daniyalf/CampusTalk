@@ -51,7 +51,7 @@
     @Html.DropDownList("sortOption", listItems, new { title = "Pick Sort", onchange = "submit();" })
 }
 <p>
-    @Html.ActionLink("New Post", "Create")
+
 @using (Html.BeginForm("Filter", "Posts"))
 {
     @Html.DropDownList("filterOption", filterListItems, new {title = "Pick Filter", onchange = "submit();" })
